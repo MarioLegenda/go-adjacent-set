@@ -97,6 +97,10 @@ Both *-h* and *-l* default to 5. The entire command looks like this
 ./seed -u root -p root -d dbName -t tableName -h 5 -l 5
 ````
 
+## 5. Usage
+
+
+
 
 
 
