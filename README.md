@@ -47,16 +47,16 @@ also be found with a simple google search. The second option is just to skip thi
 This package also integrates seamlessly with your database. It creates a table whose name you choose with your already existing database.
 The table that it creates has auto increment primary key `id`, a `name` field that must be *unique* and a `parent` field that is also 
 an integer that defaults to `NULL`. It also creates an index on name and parent fields which is really important if you alter the table later
-on in some way. If you do that, don't forget that there is also an index that needs to be reflect your changes. 
+on in some way. If you do that, don't forget that there is also an index that needs to reflect your changes. 
 
 I hope you like it.
 
 ## 4. Built in commands
 
-There are two built in commands that this package provides: `./createTable` and `./seed`. This commands will not be in your *bin* directory
+There are two built in commands that this package provides: `./createTable` and `./seed`. These commands will not be in your *bin* directory
 but in `src/github.com/MarioLegenda/go-adjacent-set` directory. In order to use them, cd into that directory.
 
-The usage is roughly the same for both of them. As I said earlier, this package does presumes that you have a working database already
+The usage is roughly the same for both of them. As I said earlier, this package presumes that you have a working database already
 in place. In order to use `./createTable`, you need to pass all the information to connect to the database and the name of the table to use.
 The full command looks like this...
 
@@ -69,11 +69,11 @@ The full command looks like this...
 - *-d* is the database name
 - *-t* is the table name to create
 
-This command create the table `tableName` with these fields:
+This command creates the table `tableName` with these fields:
 
 - *tableName_id AUTO_INCREMENT PRIMARY KEY*
 - *name VARCHAR(255) NOT NULL*
-- *parent* INT DEFAULT NULL*
+- *parent INT DEFAULT NULL*
 
 It also adds a unique constraint called *unique_name* to (you guessed it) the *name* field. There is also an index created with this
 basic statement:
@@ -85,9 +85,10 @@ CREATE INDEX idx_name_and_parent ON tableName (name, parent)
 The `./seed` command is the same but it accepts additional *-h* for depth and *-l* for the number of leafs. The seed command
 creates some additional data for you to try this package out. 
 
-*Do not run this command on the production server*
+**Do not run this command on the production server**
 
 - *-h* tells the command how many sublevels the created tree should have. 
+- *-l* tells the command the number of leafs every sublevel has. 
 
 If you put *-h 5* and *-l 5*, that basically means *pow(5, 5)* so be careful with this command. I tried *-h 15 -l 10*. It took some time.
 Both *-h* and *-l* default to 5. The entire command looks like this
