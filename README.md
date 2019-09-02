@@ -104,6 +104,37 @@ Both *-h* and *-l* default to 5. The entire command looks like this
 
 ## 5. Usage
 
+The main type to use is the `AdjacentSetMetadata` that accepts an sql connection handle and the table name. In these examples,
+I will make the errors `panic` for the sake of brevity but you should handle them however you wish.
+
+````go
+import(
+	gas "github.com/MarioLegenda/go-adjacent-set"
+)
+
+func main() {
+	db, err := sql.Open("mysql", fmt.Sprintf("root:root@/%s", dbName))
+
+	if err != nil {
+		panic(err)
+	}
+
+    asm := gas.AdjacentSetMetadata{
+        handle: db,
+        tableName: "tableName"
+    }
+}
+````
+
+`AdjacentSetMetadata` has all the regular CRUD operations (except for deletion, *Important to know before using it* section). 
+
+- `CreateRoot` creates the root node 
+- `Root` returns the the `RootCategory` struct with the created root node data and an error if an error occurred, `nil` otherwise
+- `CreateCategory` accepts a `Category` struct with the neccessary data to create a category. It returns the database id in
+   which it is created and an error if an error occurred
+- `CategoryExists` accepts the same parameters as `CreateCategory` but returns a bool and an error if an error occurred
+- `GetCategory` accepts a `FetchOptions` struct and returns an `AdjacentSetResult` if it found one and an error if an error occurred
+
 
 
 
