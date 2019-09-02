@@ -152,6 +152,73 @@ We start by creating a root node.
     if error != nil { panic(error) }
 ````
 
+Under the hood, `CreateRoot` check if the root node already exists. If you know that the root node is already created, you can skip 
+the error returned from `CreateRoot` so it is safe to call `CreateRoot` multiple times.
+
+To check if the root node exists, use the `Root` method. One caveat with this method is that if the root node does not exist, it
+returns a `RootCategory` struct with `Name` and `Id` fields with default values (empty string and 0). I had to do it like this
+because if I return an error object, go complains about memory segmentation for some reason.
+
+````go
+root, err := asm.Root()
+
+if root.Name == "" && root.Id == 0 {
+    // root does not exist
+}
+````
+
+After that, you can start created your categories.
+
+`Nodes or categories, name it however you like. The methods on the AdjacentSetMetadata names them categories`
+
+````go
+    asm := gas.AdjacentSetMetadata{
+        handle: db,
+        tableName: "tableName"
+    }
+
+    // since the shorthand := assignament creates a basic int, we need to declare the id as int64 before hand
+    // since the sql package works only with int64
+    var id int64
+    // CreateRoot only accepts the root name. Name it whatever you like
+    id, error := asm.CreateRoot("Root")
+
+    if error != nil { panic(error) }
+
+    categoryId, err := asm.CreateCategory(gas.Category{
+        Name: "First category",
+        CategoryId: id
+    })
+````
+
+And you have created your first category. After you created your first category, create and add more categories to that category
+
+````go
+    categoryId, err := asm.CreateCategory(gas.Category{
+        Name: "First category",
+        // id is the root id from our previous example
+        CategoryId: id
+    })
+
+    for i := range []int{1, 2, 3, 4, 5} {
+    	_, err := asm.CreateCategory(gas.Category{
+    		Name: fmt.Sprintf("Category_%d", i),
+                // id is the root id from our previous example
+            CategoryId: categoryId
+        })
+    }
+````
+
+In the above example, we have just created 5 categories as children to our root category names `Category_{0-4}`. 
+
+### 5.1 Traversing the tree
+
+
+
+
+
+
+
 
 
 

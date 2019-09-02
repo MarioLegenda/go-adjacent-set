@@ -23,7 +23,7 @@ func (metadata AdjacentSetMetadata) CreateRoot(name string) (int64, error) {
 	// if the root exists, do not attempt to create it
 	root, _ := metadata.Root()
 	if root.Name != "" && root.Id != 0 {
-		return 0, errors.New("Root already created")
+		return 0, nil
 	}
 
 	// for some reason, shorthand assignament does not work for int64 for we have to declare it before hand
