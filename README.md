@@ -47,7 +47,12 @@ also be found with a simple google search. The second option is just to skip thi
 This package also integrates seamlessly with your database. It creates a table whose name you choose with your already existing database.
 The table that it creates has auto increment primary key `id`, a `name` field that must be *unique* and a `parent` field that is also 
 an integer that defaults to `NULL`. It also creates an index on name and parent fields which is really important if you alter the table later
-on in some way. If you do that, don't forget that there is also an index that needs to reflect your changes. 
+on in some way. If you do that, don't forget that there is also an index that needs to reflect your changes.
+
+Also, I haven't written any code to delete a node. I'm still thinking about it. Should I remove all the subtree
+nodes of a parent node, delete only the one that you want to delete and keep the children orphans, soft delete them i.e. place a `deletedAt` field
+making it unqueriable but still in the database if you wish to restore them later on, or should I rearrange them in a way you see fit? Those
+are the questions that I hope to find the answers to. 
 
 I hope you like it.
 
@@ -98,6 +103,8 @@ Both *-h* and *-l* default to 5. The entire command looks like this
 ````
 
 ## 5. Usage
+
+
 
 
 
