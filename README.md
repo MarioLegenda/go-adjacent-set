@@ -1,10 +1,3 @@
-1. Overview
-2. How to install it
-3. Important to know
-3. Using built in commands
-4. How to use it
-5. API
-
 ## 1. Overview
 
 This package is a basic adjacency set for MySQL written in Go for representing hierarchical data in MySQL. It is extremely basic and at 
@@ -152,7 +145,7 @@ We start by creating a root node.
     if error != nil { panic(error) }
 ````
 
-Under the hood, `CreateRoot` check if the root node already exists. If you know that the root node is already created, you can skip 
+Under the hood, `CreateRoot` checks if the root node already exists. If you know that the root node is already created, you can skip 
 the error returned from `CreateRoot` so it is safe to call `CreateRoot` multiple times.
 
 To check if the root node exists, use the `Root` method. One caveat with this method is that if the root node does not exist, it
@@ -213,6 +206,37 @@ In the above example, we have just created 5 categories as children to our root 
 
 ### 5.1 Traversing the tree
 
+In order to traverse the tree, we need to get our category. For the sake of this example, imagine that we have a tree 5 levels deep
+with 5 leaf nodes each.
+
+First, we get the root node with `GetCategory` method
+
+````go
+var id int64 = 1
+var result AdjacentSetResult 
+// for the sake of brevity, we skip the error handling here
+result, _ = asm.GetCategory(gas.FetchOptions{
+    Id: id
+})
+````
+
+The result is an `AdjacentSetResult` that has methods `Children()` and `Parent()` with which you traverse the tree.
+
+````go
+level1Children := result.Children()
+
+// len(level1Children) == 5
+
+level2Children := level1Children[0].Children()
+
+// len(level2Children) == 5
+
+leve1Parent := level2Children.Parent()
+root := level1Parent.Parent()
+
+````
+
+As you can see, we traverse the tree 2 sublevels and we get back to our initial parent. 
 
 
 
