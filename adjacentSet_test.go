@@ -82,9 +82,11 @@ func TestNonExistingRoot(t *testing.T) {
 		TableName:         tableName,
 	}
 
-	_, err = metadata.Root()
+	root, err := metadata.Root()
 
-	if err == nil {
+	fmt.Println(root)
+
+	if err != nil && root.Name == "" && root.Id == 0 {
 		t.Errorf("TestNonExistentRoot() should fail but it did not with message %s", err.Error())
 	}
 }

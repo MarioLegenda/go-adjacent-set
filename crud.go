@@ -20,6 +20,13 @@ func (metadata AdjacentSetMetadata) CreateRoot(name string) (int64, error) {
 
 	db = metadata.Handle
 
+	// if the root exists, do not attempt to create it
+	root, _ := metadata.Root()
+	if root.Name != "" && root.Id != 0 {
+		return 0, errors.New("Root already created")
+	}
+
+	// for some reason, shorthand assignament does not work for int64 for we have to declare it before hand
 	var lastInsertId int64
 
 	stmt, err := db.Prepare(createRootSql)
@@ -169,7 +176,7 @@ func (metadata AdjacentSetMetadata) Root() (RootCategory, error) {
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return RootCategory{}, errors.New("Root category does not exist")
+			return RootCategory{}, nil
 		} else {
 			return RootCategory{}, errors.New(err.Error())
 		}
